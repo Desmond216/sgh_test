@@ -4,7 +4,7 @@
 we would need anaconda prompt to run the jupyter notebook
 use this command to 
  ```
- conda create -n sgh_env python=3.8
+ conda create -n sgh_env python=3.8 -y
  conda activate sgh_env
  conda install -r requirements.txt
  ```
