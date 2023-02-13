@@ -6,7 +6,7 @@ use this command to
  ```
  conda create -n sgh_env python=3.8 -y
  conda activate sgh_env
- conda install -r requirements.txt
+ pip install -r requirements.txt
  ```
  
  ## 2. run all cells in the jupyter notebook ```sgh_test``` 
