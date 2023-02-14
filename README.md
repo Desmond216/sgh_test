@@ -17,7 +17,7 @@ This is the diagram for the system design of this project under few assumptions:
 
 
 
-## 1. setting up python environment 
+## 1. Setting up python environment 
 we would need anaconda prompt to run the jupyter notebook
 
 after cloning the project, go to the directory and use this command or other equivalent command to set up the python environment and install dependencies for the project
@@ -27,7 +27,7 @@ after cloning the project, go to the directory and use this command or other equ
  pip install -r requirements.txt
  ```
  
- ## 2. run all cells in the jupyter notebook ```sgh_test``` 
+ ## 2. Run all cells in the jupyter notebook ```sgh_test``` 
  The jupyter notebook would train and save all the models, and also initialize the sqlite3 databases before using the app to make new prediction
  
  ## 3. Run the ```app.py```
