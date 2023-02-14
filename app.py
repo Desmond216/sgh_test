@@ -5,23 +5,26 @@ import numpy as np
 import sqlite3
 import joblib
 
+#model api hosted together with web app assuming there's no other services depend on model api except web app
 def model_api(model_name, *args):
     model = joblib.load(f'models/{model_name}.joblib')
     parameters = pd.DataFrame({'Age':[args[0]], 'AgeGroup':[args[1]], 'Sex':[args[2]], 'Infection':[args[3]], 'SysBP':[args[4]], 'Pulse':[args[5]], 'Emergency':[args[6]]})
     survive = model.predict(parameters)[0]
     prob = int(np.max(model.predict_proba(parameters))*100)
     if survive:
-        return f'predicted survive with probability: {prob}%'
+        return (1,f'predicted survive with probability: {prob}%')
     else:
-        return f'predicted not survive with probability: {prob}%'
+        return (0,f'predicted not survive with probability: {prob}%')
 
+#saving new patient input data into database
 def logging(*args):
     conn = sqlite3.connect('sgh.db')
-    parameters = pd.DataFrame({'ID':[args[7]], 'Age':[args[0]], 'AgeGroup':[args[1]], 'Sex':[args[2]], 'Infection':[args[3]], 'SysBP':[args[4]], 'Pulse':[args[5]], 'Emergency':[args[6]]})
+    parameters = pd.DataFrame({'ID':[args[7]], 'Age':[args[0]], 'AgeGroup':[args[1]], 'Sex':[args[2]], 'Infection':[args[3]], 'SysBP':[args[4]], 'Pulse':[args[5]], 'Emergency':[args[6]], 'Predicted_Survive':[args[8]]})
     parameters.to_sql('logging', con=conn, if_exists='append', index=False)
     conn.close()
     return
 
+#get new patient input data logs
 def show_logs():
     conn = sqlite3.connect('sgh.db')
     logs = pd.read_sql('SELECT * FROM logging', con=conn)
@@ -64,11 +67,15 @@ def main():
         
 
         if st.button("Submit"):
+
+            #call model api to get prediction
+            survive, display_string = model_api('log_reg_model', age, agroup, sex, infection, sysbp, pulse, emergency)
+            
             #display result when prompted    
-            st.success(model_api('log_reg_model', age, agroup, sex, infection, sysbp, pulse, emergency))
+            st.success(display_string)
 
             #saving new record to logging database
-            logging(age, agroup, sex, infection, sysbp, pulse, emergency, Id)
+            logging(age, agroup, sex, infection, sysbp, pulse, emergency, Id, survive)
     else:
 
         st.title("This is new patient data input logs")
