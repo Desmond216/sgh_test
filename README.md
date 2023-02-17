@@ -13,6 +13,13 @@ This is the diagram for the system design of this project under few assumptions:
 
 ![image](https://user-images.githubusercontent.com/27355460/218440833-dc6846e7-8c26-4a87-b22b-f02b58870016.png)
 
+### Workflow
+ 1) Data from csv is analysed and processed in jupyter notebook
+ 2) Processed data is used to train machine learning models and the models are saved
+ 3) Jupyter notebook initialises database to store processed data in normalised tables and set up logging table
+ 4) The hosted app is able to receive user input and call model api to make prediction with the given input and show prediction result
+ 5) User input data is saved in logging table and the data is available on the app
+
 
 
 
